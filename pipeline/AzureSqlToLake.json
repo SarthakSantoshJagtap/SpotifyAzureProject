@@ -133,14 +133,9 @@
 			{
 				"name": "Update_Last_CDC",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Max_CDC",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
