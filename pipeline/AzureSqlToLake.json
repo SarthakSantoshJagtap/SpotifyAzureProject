@@ -65,7 +65,15 @@
 				"outputs": [
 					{
 						"referenceName": "Parquet_Dynamic",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "bronze",
+							"Folder": "New_Files",
+							"File": {
+								"value": "@concat(pipeline().parameters.Table,' _ ', variables('current'))",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
