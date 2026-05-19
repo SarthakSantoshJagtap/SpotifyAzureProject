@@ -133,14 +133,7 @@
 			{
 				"name": "Update_Last_CDC",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Max_CDC",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -205,39 +198,42 @@
 				]
 			},
 			{
-				"name": "Max_CDC",
-				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "AzureSqlToLake",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "SqlDatabaseLinkService",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
-					"scripts": [
+					"ifTrueActivities": [
 						{
-							"type": "Query",
-							"text": {
-								"value": "SELECT MAX(@{pipeline().parameters.CDC_col}) as cdc from @{pipeline().parameters.Schema}.@{pipeline().parameters.Table}",
-								"type": "Expression"
+							"name": "Max_CDC",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "SqlDatabaseLinkService",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "SELECT MAX(@{pipeline().parameters.CDC_col}) as cdc from @{pipeline().parameters.Schema}.@{pipeline().parameters.Table}",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
+					]
 				}
 			}
 		],
