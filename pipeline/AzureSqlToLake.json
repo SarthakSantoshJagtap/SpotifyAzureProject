@@ -68,7 +68,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "bronze",
-							"Folder": "New_Files",
+							"Folder": {
+								"value": "@pipeline().parameters.Table",
+								"type": "Expression"
+							},
 							"File": {
 								"value": "@concat(pipeline().parameters.Table,' _ ', variables('current'))",
 								"type": "Expression"
