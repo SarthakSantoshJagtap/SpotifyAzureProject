@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "[{\"schema\":\"dbo\",\"table\":\"DimUser\",\"cdc_col\":\"updated_at\",\"from_date\":\"\"},{\"schema\":\"dbo\",\"table\":\"DimTrack\",\"cdc_col\":\"updated_at\",\"from_date\":\"\"},{\"schema\":\"dbo\",\"table\":\"DimDate\",\"cdc_col\":\"date\",\"from_date\":\"\"},{\"schema\":\"dbo\",\"table\":\"DimArtist\",\"cdc_col\":\"updated_at\",\"from_date\":\"\"},{\"schema\":\"dbo\",\"table\":\"FactStream\",\"cdc_col\":\"stream_timestamp\",\"from_date\":\"\"}]",
+						"value": "@pipeline().parameters.Loop_input",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -290,7 +290,10 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"container": "bronze",
-													"folder": "CDC",
+													"folder": {
+														"value": "@{item().Table}_CDC",
+														"type": "Expression"
+													},
 													"file": "empty.json"
 												}
 											}
