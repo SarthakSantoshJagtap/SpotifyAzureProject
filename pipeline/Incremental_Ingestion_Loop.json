@@ -38,7 +38,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{pipeline().parameters.Schema}.@{pipeline().parameters.Table} WHERE @{pipeline().parameters.CDC_col} > '@{if(empty(pipeline().parameters.FromDate) ,activity('last_CDC').output.value[0].CDC,pipeline().parameters.FromDate)}'",
+										"value": "select * from @{item().Schema}@{item().Table} WHERE @{item().CDC_col} > '@{if(empty(item().FromDate) ,activity('last_CDC').output.value[0].CDC,item().FromDate)}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -76,11 +76,11 @@
 									"parameters": {
 										"Container": "bronze",
 										"Folder": {
-											"value": "@{pipeline().parameters.Table}_CDC",
+											"value": "@{item().Table}_CDC",
 											"type": "Expression"
 										},
 										"File": {
-											"value": "@concat(pipeline().parameters.Table,' _ ', variables('current'))",
+											"value": "@concat(item().Table' _ ', variables('current'))",
 											"type": "Expression"
 										}
 									}
@@ -117,7 +117,7 @@
 									"parameters": {
 										"container": "bronze",
 										"folder": {
-											"value": "@{pipeline().parameters.Table}_CDC",
+											"value": "@{item().Table}_CDC",
 											"type": "Expression"
 										},
 										"file": "CDC.json"
@@ -220,7 +220,7 @@
 												{
 													"type": "Query",
 													"text": {
-														"value": "SELECT MAX(@{pipeline().parameters.CDC_col}) as cdc from @{pipeline().parameters.Schema}.@{pipeline().parameters.Table}",
+														"value": "SELECT MAX(@{item().CDC_col}) as cdc from @{item().Schema}.@{item().Table}",
 														"type": "Expression"
 													}
 												}
@@ -310,17 +310,40 @@
 			}
 		],
 		"parameters": {
-			"Schema": {
-				"type": "string"
-			},
-			"Table": {
-				"type": "string"
-			},
-			"CDC_col": {
-				"type": "string"
-			},
-			"FromDate": {
-				"type": "string"
+			"Loop_input": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"schema": "dbo",
+						"table": "DimUser",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimTrack",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimDate",
+						"cdc_col": "date",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimArtist",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "FactStream",
+						"cdc_col": "stream_timestamp",
+						"from_date": ""
+					}
+				]
 			}
 		},
 		"variables": {
