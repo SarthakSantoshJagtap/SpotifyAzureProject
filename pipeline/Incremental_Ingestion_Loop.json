@@ -8,6 +8,11 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.Loop_input",
+						"type": "Expression"
+					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "AzureSqlToLake",
@@ -180,11 +185,11 @@
 												"parameters": {
 													"Container": "bronze",
 													"Folder": {
-														"value": "@pipeline().parameters.Table",
+														"value": "@item().Table",
 														"type": "Expression"
 													},
 													"File": {
-														"value": "@concat(pipeline().parameters.Table,' _ ', variables('current'))",
+														"value": "@concat(item().Table,' _ ', variables('current'))",
 														"type": "Expression"
 													}
 												}
