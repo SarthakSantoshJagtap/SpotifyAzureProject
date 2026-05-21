@@ -8,6 +8,10 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.Loop_input",
+						"type": "Expression"
+					},
 					"isSequential": true,
 					"activities": [
 						{
