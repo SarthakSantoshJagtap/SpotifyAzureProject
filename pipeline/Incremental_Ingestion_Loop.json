@@ -43,7 +43,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().schema}.@{item().table}\nWHERE @{item().cdc_col} > '@{if(\nempty(item().from_date),\nactivity('last_CDC').output.value[0].CDC,\nitem().from_date\n)}'",
+										"value": "select * from @{item().schema}.@{item().table}\nWHERE @{item().cdc_col} > '@{if(\nempty(item().From_date),\nactivity('last_CDC').output.value[0].CDC,\nitem().From_date\n)}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
